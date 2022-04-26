@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface AccountWithUserRepository extends CrudRepository<AccountWithUser, Integer> {
     List<AccountWithUser> findAccountWithUserByAccountId(int id);
+
+    List<AccountWithUser> findAccountWithUserByIban(String iban);
+
 }
