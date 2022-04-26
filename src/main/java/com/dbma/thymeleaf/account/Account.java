@@ -19,6 +19,7 @@ public class Account {
     private String currency;
     private int deposit;
     private String iban;
+    private String password;
 
     public String ibanGenerator() {
         String numericString = "0123456789";
