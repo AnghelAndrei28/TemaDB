@@ -1,5 +1,6 @@
 package com.dbma.thymeleaf.account;
 
+import com.dbma.thymeleaf.UnauthorizedException;
 import com.dbma.thymeleaf.account.transferServices.TransferMoneyServices;
 import com.dbma.thymeleaf.account.transferServices.TransferMoneyServicesExternal;
 import com.dbma.thymeleaf.user.Users;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +31,21 @@ public class AccountController {
     @Autowired
     TransferMoneyServicesExternal transferMoneyServicesExternal;
 
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public AccountController(@Autowired @Qualifier("transferMoneyServicesInternal") TransferMoneyServices transferMoneyServices) {
         this.transferMoneyServices = transferMoneyServices;
     }
 
+//    @PostMapping("/login")
+//    public String loginAccount(@RequestBody String iban, @RequestBody String pin, HttpServletResponse response) throws UnauthorizedException{
+//        Account account = accountRepository.findAccountByIbanAndPin();
+//    }
+
     @PostMapping("/add")
     public ResponseEntity<?> addAccount(@RequestBody Account account) {
         try {
+            account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             accountRepository.save(account);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

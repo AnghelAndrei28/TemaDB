@@ -28,7 +28,5 @@ public class AccountWithUser {
         this.iban = account.getIban();
     }
 
-    public AccountWithUser() {
-
-    }
+    public AccountWithUser() {}
 }
